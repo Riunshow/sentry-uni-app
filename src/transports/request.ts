@@ -17,18 +17,17 @@ export class RequestTransport extends BaseTransport {
         sdk.request({
           url: this.url,
           method: 'POST',
-          data: event,
-          success(res: any) {
-            if (res.statusCode === 200) {
-              resolve({
-                status: Status.fromHttpCode(res.statusCode),
-              })
-            } else {
-              reject(res)
-            }
+          data: JSON.stringify(event),
+          header: {
+            'content-type': 'application/json',
           },
-          fail(err: any) {
-            reject(err)
+          success(res: { statusCode: number }): void {
+            resolve({
+              status: Status.fromHttpCode(res.statusCode),
+            })
+          },
+          fail(error: object): void {
+            reject(error)
           },
         })
       }),
