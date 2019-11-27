@@ -1,0 +1,1 @@
+<view><page-head vue-id="1" title="{{title}}" bind:__l="__l"></page-head><view class="uni-padding-wrap"><button class="uni-button" type="primary" data-event-opts="{{[['tap',[['longshock',['$event']]]]]}}" bindtap="__e">长震动</button><button data-event-opts="{{[['tap',[['shortshock',['$event']]]]]}}" class="uni-button" bindtap="__e">短震动</button></view></view>

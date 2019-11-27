@@ -1,0 +1,6 @@
+
+.uni-list-cell {
+	-webkit-box-pack: start;
+	        justify-content: flex-start
+}
+

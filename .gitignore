@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+*.log
+*_cache
+*_temp
+dist
+lib
+coverage
+test/sentry.js

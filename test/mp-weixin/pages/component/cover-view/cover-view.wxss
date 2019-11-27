@@ -1,0 +1,16 @@
+
+map{
+	width: 750rpx;
+}
+.cover-view{
+	width: 375rpx;
+	text-align: center;
+	background-color: #DDDDDD;
+}
+.cover-image{
+	position: absolute;
+	left: 300rpx;
+	width: 96px;
+	height: 96px;
+}
+
