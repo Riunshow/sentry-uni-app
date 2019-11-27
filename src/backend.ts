@@ -5,12 +5,12 @@ import {
   isPlainObject,
   SyncPromise,
 } from '@sentry/utils'
-import { BaseBackend } from '@sentry/core'
-import { Event, EventHint, Options, Severity, Transport } from '@sentry/types'
+import {BaseBackend} from '@sentry/core'
+import {Event, EventHint, Options, Severity, Transport} from '@sentry/types'
 
-import { _computeStackTrace } from './tracekit'
-import { eventFromPlainObject, eventFromStacktrace, prepareFramesForEvent } from './parsers'
-import { RequestTransport } from './transports'
+import {_computeStackTrace} from './tracekit'
+import {eventFromPlainObject, eventFromStacktrace, prepareFramesForEvent} from './parsers'
+import {RequestTransport} from './transports'
 
 /**
  * Configuration options for the Sentry Browser SDK.
@@ -61,7 +61,7 @@ export class MiniprogramBackend extends BaseBackend<MiniprogramOptions> {
   /**
    * @inheritDoc
    */
-  public eventFromException(exception: any, hint?: EventHint): SyncPromise<Event> {
+  public eventFromException(exception: any, hint?: EventHint): PromiseLike<Event> {
     let event: Event
 
     if (isErrorEvent(exception as ErrorEvent) && (exception as ErrorEvent).error) {
@@ -82,11 +82,7 @@ export class MiniprogramBackend extends BaseBackend<MiniprogramOptions> {
       // which is much better than creating new group when any key/value change
       const objectException = exception as {}
       event = eventFromPlainObject(objectException, hint.syntheticException)
-      addExceptionTypeValue(event, 'Custom Object', undefined, {
-        handled: true,
-        synthetic: true,
-        type: 'generic',
-      })
+      addExceptionTypeValue(event, 'Custom Object', 'generic')
       event.level = Severity.Error
       return SyncPromise.resolve(this._buildEvent(event, hint))
     }
@@ -99,11 +95,7 @@ export class MiniprogramBackend extends BaseBackend<MiniprogramOptions> {
     // So bail out and capture it as a simple message:
     const stringException = exception as string
     return this.eventFromMessage(stringException, undefined, hint).then(messageEvent => {
-      addExceptionTypeValue(messageEvent, `${stringException}`, undefined, {
-        handled: true,
-        synthetic: true,
-        type: 'generic',
-      })
+      addExceptionTypeValue(messageEvent, `${stringException}`, 'generic')
       messageEvent.level = Severity.Error
       return SyncPromise.resolve(this._buildEvent(messageEvent, hint))
     })
@@ -122,7 +114,7 @@ export class MiniprogramBackend extends BaseBackend<MiniprogramOptions> {
   /**
    * @inheritDoc
    */
-  public eventFromMessage(message: string, level: Severity = Severity.Info, hint?: EventHint): SyncPromise<Event> {
+  public eventFromMessage(message: string, level: Severity = Severity.Info, hint?: EventHint): PromiseLike<Event> {
     const event: Event = {
       event_id: hint && hint.event_id,
       level,

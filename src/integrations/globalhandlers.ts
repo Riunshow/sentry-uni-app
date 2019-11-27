@@ -1,4 +1,4 @@
-import { _subscribe, StackTrace as TraceKitStackTrace } from '../tracekit'
+import {_subscribe, StackTrace as TraceKitStackTrace} from '../tracekit'
 import {
   addExceptionTypeValue,
   isError,
@@ -14,11 +14,11 @@ import {
   getCurrentHub,
   withScope,
 } from '@sentry/core'
-import { Event, Integration } from '@sentry/types'
-import { eventFromStacktrace } from '../parsers'
-import { globalErrorFingerprint, shouldIgnoreOnError } from '../helpers'
+import {Event, Integration} from '@sentry/types'
+import {eventFromStacktrace} from '../parsers'
+import {globalErrorFingerprint, shouldIgnoreOnError} from '../helpers'
 
-import { getSDK } from '../crossPlatform'
+import {getSDK} from '../crossPlatform'
 
 const sdk = getSDK()
 
@@ -65,7 +65,7 @@ export class GlobalHandlers implements Integration {
       const self = getCurrentHub().getIntegration(GlobalHandlers)
       if (self) {
         getCurrentHub().captureEvent(self._eventFromGlobalHandler(stack), {
-          data: { stack },
+          data: {stack},
           originalException: error,
         })
       }
@@ -98,7 +98,7 @@ export class GlobalHandlers implements Integration {
 
     if (sdk.onMemoryWarning) {
       logger.log('Global Handler attached: onMemoryWarning')
-      sdk.onMemoryWarning(({ level }: { level: number }) => {
+      sdk.onMemoryWarning(({level}: { level: number }) => {
         let levelString = 'iOS 设备, 无 level 传入.'
         switch (level) {
           case 10:
@@ -201,11 +201,7 @@ export class GlobalHandlers implements Integration {
         : 'Error'
 
     // This makes sure we have type/value in every exception
-    addExceptionTypeValue(event, fallbackValue, fallbackType, {
-      data,
-      handled: false,
-      type: stacktrace.mechanism,
-    })
+    addExceptionTypeValue(event, fallbackValue, fallbackType)
 
     return event
   }

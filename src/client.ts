@@ -1,9 +1,8 @@
-import { BaseClient, Scope } from '@sentry/core'
-import { DsnLike, Event, EventHint } from '@sentry/types'
-import { SyncPromise } from '@sentry/utils'
+import {BaseClient, Scope} from '@sentry/core'
+import {DsnLike, Event, EventHint} from '@sentry/types'
 
-import { SDK_NAME, SDK_VERSION } from './version'
-import { MiniprogramBackend, MiniprogramOptions } from './backend'
+import {MiniprogramBackend, MiniprogramOptions} from './backend'
+import {SDK_NAME, SDK_VERSION} from './version'
 
 /**
  * All properties the report dialog supports
@@ -51,7 +50,7 @@ export class MiniprogramClient extends BaseClient<MiniprogramBackend, Miniprogra
   /**
    * @inheritDoc
    */
-  protected _prepareEvent(event: Event, scope?: Scope, hint?: EventHint): SyncPromise<Event | null> {
+  protected _prepareEvent(event: Event, scope?: Scope, hint?: EventHint): PromiseLike<Event | null> {
     event.platform = event.platform || 'javascript'
     event.sdk = {
       ...event.sdk,

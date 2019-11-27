@@ -12,9 +12,9 @@ import {
   LinkedErrors,
   TryCatch,
 } from './integrations'
-import { wrap as internalWrap } from './helpers'
-import { MiniprogramClient, ReportDialogOptions } from './client'
-import { MiniprogramOptions } from './backend'
+import {wrap as internalWrap} from './helpers'
+import {MiniprogramClient, ReportDialogOptions} from './client'
+import {MiniprogramOptions} from './backend'
 
 export const defaultIntegrations = [
   new CoreIntegrations.InboundFilters(),
@@ -25,7 +25,7 @@ export const defaultIntegrations = [
   new LinkedErrors(),
 ]
 
-import { getSDK } from './crossPlatform'
+import {getSDK} from './crossPlatform'
 
 const sdk = getSDK()
 
@@ -180,7 +180,7 @@ export function onLoad(callback: () => void): void {
  *
  * @param timeout Maximum time in ms the client should wait.
  */
-export function flush(timeout?: number): Promise<boolean> {
+export function flush(timeout?: number): PromiseLike<boolean> {
   const client = getCurrentHub().getClient<MiniprogramClient>()
   if (client) {
     return client.flush(timeout)
@@ -194,7 +194,7 @@ export function flush(timeout?: number): Promise<boolean> {
  *
  * @param timeout Maximum time in ms the client should wait.
  */
-export function close(timeout?: number): Promise<boolean> {
+export function close(timeout?: number): PromiseLike<boolean> {
   const client = getCurrentHub().getClient<MiniprogramClient>()
   if (client) {
     return client.close(timeout)

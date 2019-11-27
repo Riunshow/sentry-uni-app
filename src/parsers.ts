@@ -1,7 +1,7 @@
-import { Event, Exception, StackFrame } from '@sentry/types'
-import { keysToEventMessage, normalizeToSize } from '@sentry/utils'
+import {Event, Exception, StackFrame} from '@sentry/types'
+import {extractExceptionKeysForMessage, normalizeToSize} from '@sentry/utils'
 
-import { _computeStackTrace, StackFrame as TraceKitStackFrame, StackTrace as TraceKitStackTrace } from './tracekit'
+import {_computeStackTrace, StackFrame as TraceKitStackFrame, StackTrace as TraceKitStackTrace} from './tracekit'
 
 const STACKTRACE_LIMIT = 50
 
@@ -19,7 +19,7 @@ export function exceptionFromStacktrace(stacktrace: TraceKitStackTrace): Excepti
   }
 
   if (frames && frames.length) {
-    exception.stacktrace = { frames }
+    exception.stacktrace = {frames}
   }
 
   // tslint:disable-next-line:strict-type-predicates
@@ -39,7 +39,7 @@ export function eventFromPlainObject(exception: {}, syntheticException: Error | 
     extra: {
       __serialized__: normalizeToSize(exception),
     },
-    message: `Non-Error exception captured with keys: ${keysToEventMessage(exceptionKeys)}`,
+    message: `Non-Error exception captured with keys: ${extractExceptionKeysForMessage(exceptionKeys)}`,
   }
 
   if (syntheticException) {

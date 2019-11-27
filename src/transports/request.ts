@@ -1,8 +1,8 @@
-import { Event, Response, Status } from '@sentry/types'
+import {Event, Response, Status} from '@sentry/types'
 
-import { BaseTransport } from './base'
+import {BaseTransport} from './base'
 
-import { getSDK } from '../crossPlatform'
+import {getSDK} from '../crossPlatform'
 
 const sdk = getSDK()
 
@@ -11,7 +11,7 @@ export class RequestTransport extends BaseTransport {
   /**
    * @inheritDoc
    */
-  public sendEvent(event: Event): Promise<Response> {
+  public sendEvent(event: Event): PromiseLike<Response> {
     return this._buffer.add(
       new Promise<Response>((resolve, reject) => {
         sdk.request({

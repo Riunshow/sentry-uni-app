@@ -1,6 +1,6 @@
-import { addExceptionTypeValue, isError, isString, logger, normalize } from '@sentry/utils'
-import { captureException, getCurrentHub, withScope } from '@sentry/core'
-import { Mechanism, Event as SentryEvent, WrappedFunction } from '@sentry/types'
+import {addExceptionTypeValue, isError, isString, logger, normalize} from '@sentry/utils'
+import {captureException, getCurrentHub, withScope} from '@sentry/core'
+import {Mechanism, Event as SentryEvent, WrappedFunction} from '@sentry/types'
 
 const debounceDuration: number = 1000
 let keypressTimeout: number | undefined
@@ -89,10 +89,10 @@ export function wrap(
 
       withScope(scope => {
         scope.addEventProcessor((event: SentryEvent) => {
-          const processedEvent = { ...event }
+          const processedEvent = {...event}
 
           if (options.mechanism) {
-            addExceptionTypeValue(processedEvent, undefined, undefined, options.mechanism)
+            addExceptionTypeValue(processedEvent, undefined, options.mechanism.type)
           }
 
           processedEvent.extra = {
@@ -116,7 +116,7 @@ export function wrap(
         sentryWrapped[property] = fn[property]
       }
     }
-  } catch (_oO) {} // tslint:disable-line:no-empty
+  } catch (_oO) { } // tslint:disable-line:no-empty
 
   fn.prototype = fn.prototype || {}
   sentryWrapped.prototype = fn.prototype
