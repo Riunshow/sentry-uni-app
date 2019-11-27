@@ -1,9 +1,0 @@
-
-.uni-list-cell {
-	-webkit-box-pack: start;
-	        justify-content: flex-start
-}
-.uni-list .label-3 {
-	padding: 0;
-}
-

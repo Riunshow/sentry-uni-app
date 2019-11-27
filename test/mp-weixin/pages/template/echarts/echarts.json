@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "ECharts图表",
-  "usingComponents": {
-    "mpvue-echarts": "/components/mpvue-echarts/src/echarts",
-    "u-link": "/components/uLink"
-  }
-}

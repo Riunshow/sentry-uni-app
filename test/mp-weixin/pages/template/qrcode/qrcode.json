@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "二维码生成",
-  "usingComponents": {
-    "qrcode": "/components/qrcode/qrcode"
-  }
-}

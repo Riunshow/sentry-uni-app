@@ -10,6 +10,7 @@ import {
 import {
   captureEvent,
   captureException,
+  captureMessage,
   getCurrentHub,
   withScope,
 } from '@sentry/core'
@@ -58,20 +59,6 @@ export class GlobalHandlers implements Integration {
     Error.stackTraceLimit = 50
 
     _subscribe((stack: TraceKitStackTrace, _: boolean, error: Error) => {
-      // TODO: use stack.context to get a valuable information from TraceKit, eg.
-      // [
-      //   0: '  })'
-      //   1: ''
-      //   2: '  function foo () {'
-      //   3: '    Sentry.captureException('some error')'
-      //   4: '    Sentry.captureMessage('some message')'
-      //   5: '    throw 'foo''
-      //   6: '  }'
-      //   7: ''
-      //   8: '  function bar () {'
-      //   9: '    foo()'
-      //   10: '  }'
-      // ]
       if (shouldIgnoreOnError()) {
         return
       }
@@ -92,6 +79,39 @@ export class GlobalHandlers implements Integration {
     if (this._options.onpagenotfound) {
       logger.log('Global Handler attached: onpagenotfound')
       this._installGlobalPageNotFoundHandler()
+    }
+
+    if (sdk.onError) {
+      logger.log('Global Handler attached: onError')
+      sdk.onError((error: string) => {
+        console.info('sentry-miniapp', error)
+        captureException(new Error(error))
+      })
+    }
+
+    if (sdk.onPageNotFound) {
+      logger.log('Global Handler attached: onPageNotFound')
+      sdk.onPageNotFound((res: object) => {
+        captureMessage(`页面无法找到: ${JSON.stringify(res)}`)
+      })
+    }
+
+    if (sdk.onMemoryWarning) {
+      logger.log('Global Handler attached: onMemoryWarning')
+      sdk.onMemoryWarning(({ level }: { level: number }) => {
+        let levelString = 'iOS 设备, 无 level 传入.'
+        switch (level) {
+          case 10:
+            levelString = 'Android 设备, level = TRIM_MEMORY_RUNNING_LOW'
+            break
+          case 15:
+            levelString = 'Android 设备, level = TRIM_MEMORY_RUNNING_CRITICAL'
+            break
+          default:
+            return
+        }
+        captureMessage(`内存不足告警: ${levelString}`)
+      })
     }
   }
 
