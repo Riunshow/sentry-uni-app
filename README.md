@@ -11,8 +11,6 @@ yarn
 yarn build
 ```
 
-![](./docs/dist.png)
-
 ```js
 // 创建文件 logger.js, 写入以下内容
 import * as Sentry from './dist/index.js'
